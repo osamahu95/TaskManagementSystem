@@ -1,0 +1,6 @@
+# Ignore the Visual Studio settings folder
+.vs/
+
+# Ignore bin and obj folders in all subdirectories
+obj/
+bin/
