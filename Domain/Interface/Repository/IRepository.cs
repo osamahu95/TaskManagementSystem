@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interface
+namespace Domain.Interface.Repository
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T> where T : class
     {
         Task<T> GetById(int Id);
         Task<IEnumerable<T>> GetAll();

@@ -1,6 +1,9 @@
 using Data;
 using Data.Repository;
 using Domain.Interface;
+using Domain.Interface.Repository;
+using Domain.Interface.Service;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +19,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Register the containers
+// Regsiter the Service Container
+builder.Services.AddTransient<ITaskService, TaskService>();
+// Register the Repo containers
 builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

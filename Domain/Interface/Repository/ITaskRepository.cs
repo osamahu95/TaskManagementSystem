@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interface
+namespace Domain.Interface.Repository
 {
-    public interface IUserRepository: IRepository<Domain.Models.User>
+    public interface ITaskRepository : IRepository<Models.Task>
     {
     }
 }

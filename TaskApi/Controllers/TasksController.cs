@@ -1,4 +1,4 @@
-﻿using Domain.Interface;
+﻿using Domain.Interface.Service;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,31 +9,30 @@ namespace TaskApi.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ITaskService _taskService;
 
-        public TasksController(IUnitOfWork unitOfWork)
+        public TasksController(ITaskService taskService)
         {
-            _unitOfWork = unitOfWork;
+            _taskService = taskService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _taskService.GetTaskById(id));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _unitOfWork.TaskRepository.GetAll());
+            return Ok(await _taskService.GetAllTasks());
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(TaskInputViewModel taskInputViewModel)
         {
-            Domain.Models.Task task = new Domain.Models.Task()
-            {
-                Title = taskInputViewModel.Title,
-                IsCompleted = taskInputViewModel.IsCompleted,
-                UserId = taskInputViewModel.AssignedUser
-            };
-            await _unitOfWork.TaskRepository.Add(task);
-            await _unitOfWork.SaveChanges();
-            return CreatedAtAction(nameof(GetAll), new { id = task.Id }, task);
+            var createdTask = await _taskService.CreateTask(taskInputViewModel);
+            return CreatedAtAction(nameof(GetAll), new { id = createdTask.Id }, createdTask);
         }
     }
 }
