@@ -39,32 +39,41 @@ namespace Data.Repository
             return await _dbSet.FindAsync(Id);
         }
 
-        public void InsertOrUpdate(IEnumerable<T> entities)
+        public async Task InsertOrUpdate(IEnumerable<T> entities)
         {
-            using var transaction = _appDbContext.Database.BeginTransaction();
+            using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                foreach(var entity in entities)
+                var entitiesToInsert = entities.Where(e => IsNewEntity(e));
+                var entitiesToUpdate = entities.Where(e => !IsNewEntity(e));
+
+                if (entitiesToUpdate.Any())
                 {
-                    var entityEntry = _appDbContext.Entry(entity);
-                    if(entityEntry.State == EntityState.Detached)
-                    {
-                        _dbSet.Add(entity);
-                    }
-                    else if(entityEntry.State == EntityState.Modified)
-                    {
-                        _dbSet.Update(entity);
-                    }
+                    await _dbSet.AddRangeAsync(entitiesToInsert);
+                }
+                if (entitiesToUpdate.Any())
+                {
+                    _dbSet.UpdateRange(entitiesToUpdate);
                 }
 
-                _appDbContext.SaveChanges();
-                transaction.Commit();
+                await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
             }
             catch(Exception ex)
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
+        }
+
+        private bool IsNewEntity(T entity)
+        {
+            var prop = typeof(T).GetProperty("Id");
+            if (prop == null)
+                throw new InvalidOperationException("Entity must have an Id Property");
+
+            var value = prop.GetValue(entity);
+            return value is int intvalue && intvalue == 0;
         }
 
         public void Update(T entity)

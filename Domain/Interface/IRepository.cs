@@ -13,6 +13,6 @@ namespace Domain.Interface
         Task Add(T entity);
         void Update(T entity);
         void DeleteById(T entity);
-        void InsertOrUpdate(IEnumerable<T> entities);
+        Task InsertOrUpdate(IEnumerable<T> entities);
     }
 }
