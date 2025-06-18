@@ -4,7 +4,11 @@ using Domain.Interface;
 using Domain.Interface.Repository;
 using Domain.Interface.Service;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using TaskApi.Filters;
+using TaskApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +29,24 @@ builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// Register the Filter Containers
+builder.Services.AddScoped<LogActionFilter>();
+builder.Services.AddScoped<TimeLoggingFilter>();
+
+// JWT Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 var app = builder.Build();
 
@@ -36,6 +58,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
+app.UseAuthorization();
+// Configure Middlewares
+app.UseMiddleware<RequestLoggingMiddleware>();
+// Map Controllers
 app.MapControllers();
 app.Run();

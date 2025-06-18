@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskApi", "TaskApi.csproj", "{61B3AECB-8DB1-400F-93CA-F8CC70CBA37E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "..\Domain\Domain.csproj", "{038DDD48-589D-4C34-ABEE-1E5B1F941EF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskApi.Domain", "..\Domain\TaskApi.Domain.csproj", "{038DDD48-589D-4C34-ABEE-1E5B1F941EF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "..\Data\Data.csproj", "{FD1723D8-8C72-4998-93A8-BD66D714A65D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskApi.Data", "..\Data\TaskApi.Data.csproj", "{FD1723D8-8C72-4998-93A8-BD66D714A65D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{162BCE00-F21A-43FB-81D3-EFC357F1735C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskApi.Infrastructure", "..\Infrastructure\TaskApi.Infrastructure.csproj", "{162BCE00-F21A-43FB-81D3-EFC357F1735C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
