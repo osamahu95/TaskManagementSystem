@@ -1,4 +1,4 @@
-﻿using Domain.Interface.Repository;
+﻿using TaskApi.Domain.Interface.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public class TaskRepository: Repository<Domain.Models.Task>, ITaskRepository
+    public class TaskRepository: Repository<TaskApi.Domain.Models.Task>, ITaskRepository
     {
         private readonly AppDbContext _appDbContext;
 

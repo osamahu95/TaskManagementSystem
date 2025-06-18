@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using TaskApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data
@@ -9,7 +9,7 @@ namespace Data
         {
         }
 
-        public DbSet<Domain.Models.Task> Tasks { get; set; }
+        public DbSet<TaskApi.Domain.Models.Task> Tasks { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

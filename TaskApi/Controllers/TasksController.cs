@@ -1,5 +1,5 @@
-﻿using Domain.Interface.Service;
-using Domain.ViewModels;
+﻿using TaskApi.Domain.Interface.Service;
+using TaskApi.Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskApi.Filters;

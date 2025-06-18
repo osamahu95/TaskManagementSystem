@@ -1,14 +1,16 @@
 using Data;
 using Data.Repository;
-using Domain.Interface;
-using Domain.Interface.Repository;
-using Domain.Interface.Service;
-using Infrastructure.Services;
+using TaskApi.Domain.Interface;
+using TaskApi.Domain.Interface.Repository;
+using TaskApi.Domain.Interface.Service;
+using TaskApi.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskApi.Filters;
 using TaskApi.Middlewares;
+using TaskApi.Domain.Interface.Validators;
+using TaskApi.Infrastructure.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,9 @@ builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// Register the Validators
+builder.Services.AddScoped<ITaskValidator, AdminTaskValidator>();
+builder.Services.AddScoped<ITaskValidator, UserTaskValidator>();
 // Register the Filter Containers
 builder.Services.AddScoped<LogActionFilter>();
 builder.Services.AddScoped<TimeLoggingFilter>();

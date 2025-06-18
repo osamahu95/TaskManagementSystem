@@ -1,11 +1,11 @@
-﻿using Domain.ViewModels;
+﻿using TaskApi.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interface.Service
+namespace TaskApi.Domain.Interface.Service
 {
     public interface ITaskService
     {

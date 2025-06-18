@@ -1,5 +1,5 @@
-﻿using Domain.Interface.Repository;
-using Domain.Models;
+﻿using TaskApi.Domain.Interface.Repository;
+using TaskApi.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

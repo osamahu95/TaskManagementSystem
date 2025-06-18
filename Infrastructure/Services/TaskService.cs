@@ -1,21 +1,24 @@
-﻿using Domain.Interface;
-using Domain.Interface.Service;
-using Domain.ViewModels;
+﻿using TaskApi.Domain.Interface;
+using TaskApi.Domain.Interface.Service;
+using TaskApi.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskApi.Domain.Interface.Validators;
 
-namespace Infrastructure.Services
+namespace TaskApi.Infrastructure.Services
 {
     public class TaskService : ITaskService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEnumerable<ITaskValidator> _taskValidators;
 
-        public TaskService(IUnitOfWork unitOfWork)
+        public TaskService(IUnitOfWork unitOfWork, IEnumerable<ITaskValidator> taskValidators)
         {
             _unitOfWork = unitOfWork;
+            _taskValidators = taskValidators;
         }
 
         public async Task<Domain.Models.Task> CreateTask(TaskInputViewModel taskInputViewModel)
@@ -26,9 +29,16 @@ namespace Infrastructure.Services
                 IsCompleted = taskInputViewModel.IsCompleted,
                 UserId = taskInputViewModel.AssignedUser
             };
+            foreach(var validator in _taskValidators)
+            {
+                if (!validator.Validate(task, out string errorMessage))
+                {
+                    throw new ArgumentException(errorMessage);
+                }
+            }
+
             await _unitOfWork.TaskRepository.Add(task);
             await _unitOfWork.SaveChanges();
-
             return task;
         }
 
